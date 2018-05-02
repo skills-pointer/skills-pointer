@@ -5,10 +5,8 @@
    </HEAD> 
    <body>
        <p>Qui pourrait m'aider sur...</p>
-       <form action="" onSubmit="searchSkills(); return false;">
             <input id="skillInput" type="text" placeholder="ex : angular">
-            <button>OK</button>
-        </form>
+            <button onclick="searchSkills()">OK</button>
 
        <div id="result">
            <ul id="result_list">
@@ -29,13 +27,15 @@
               var recommendations = JSON.parse(localStorage[dbname]).recommendations;
               
                $("#result_list").empty();
-               $("#nobody").attr("style").value= "display: none;";
+               $("#nobody").hide();
+               
                 var searchedSkill = document.getElementById("skillInput").value;
 
                 var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
 
                 if (findRecommendation.length > 0)
                 {
+                    console.log("Results found");
                     var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.recommendee === p.id)) ;
 
                     peopleWithSkill.forEach(p => {
@@ -44,7 +44,8 @@
                     });  
                 }         
                 else{
-                    $("#nobody").removeAttr("style");
+                    console.log("No results found");
+                    $("#nobody").show();
                 }      
            }
        </script>
