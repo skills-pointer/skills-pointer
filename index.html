@@ -11,8 +11,10 @@
        <div id="result">
            <ul id="result_list">
                
-           </ul>
+           </ul>        
        </div>
+
+       
 
        <script>
            function searchSkills() {
@@ -25,8 +27,12 @@
                     var li2 = document.createElement('li');
                     li2.innerHTML = 'Iron Man';
                     document.getElementById("result_list").appendChild(li2)
-        
-
+                }
+                else{
+                    var paragraphe = document.createElement('p');
+                    paragraphe.innerHTML = "personne ne peut vous aider... :(   "
+                    document.getElementById("result_list").appendChild(paragraphe)
+                    
                 }
            }
        </script>
