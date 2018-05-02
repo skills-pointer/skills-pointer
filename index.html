@@ -23,12 +23,11 @@
        <script>
 
             var dbname = 'skillspointer';
-            var persons = JSON.parse(localStorage[dbname]).persons;
-            var recommendations = JSON.parse(localStorage[dbname]).recommendations;
-
-console.log(persons,recommendations);
 
            function searchSkills() {
+              var persons = JSON.parse(localStorage[dbname]).persons;
+              var recommendations = JSON.parse(localStorage[dbname]).recommendations;
+              
                $("#result_list").empty();
                $("#nobody").attr("style").value= "display: none;";
                 var searchedSkill = document.getElementById("skillInput").value;
