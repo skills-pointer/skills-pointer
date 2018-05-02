@@ -1,0 +1,21 @@
+[
+    {
+        "name": "John Doe",
+        "location": "Meylan",
+        "recommandation": "angular"
+    },
+    {
+        "name": "John Doe",
+        "location": "Meylan",
+        "recommandation": "gestion de conflit"
+    },{
+        "name": "Bastien David",
+        "location": "Meylan",
+        "recommandation": "git"
+    },
+    {
+        "name": "Brice de Nice",
+        "location": "Sofia Antipolis",
+        "recommandation": "angular"
+    }
+]
