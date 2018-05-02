@@ -77,8 +77,9 @@
                 } else {
                     recommendee=person[0];
                 }
-                
-                recommendations.push({"recommendee":recommendee.id,"skill":skill});
+
+                recommendation = {recommender:user.id,recommendee:recommendee.id,skill:skill};
+                recommendations.push(recommendation);
                 
                 console.log(persons,recommendations);
             }
