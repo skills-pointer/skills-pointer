@@ -1,54 +1,51 @@
 <HTML >
-   <HEAD>
-       <title>Skills pointer</title>
-       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-   </HEAD> 
-   <body>
-       <p>Qui pourrait m'aider sur...</p>
-            <input id="skillInput" type="text" placeholder="ex : angular">
-            <button onclick="searchSkills()">OK</button>
+  <HEAD>
+    <title>Skills pointer - find help</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="db.js"></script>
+  </HEAD> 
+  <body>
+    <p>Qui pourrait m'aider sur...</p>
+    <input id="skillInput" type="text" placeholder="ex : angular">
+    <button onclick="searchSkills()">OK</button>
 
-       <div id="result">
-           <ul id="result_list">
-               
-           </ul>        
-       </div>
-       <div id="nobody" style="display: none;">
-           <p>Aucune personne ne peut vous aider</p>
-           <img src='./img/Appel%20à%20ami.webp' width='100px'>
-       </div>
+    <div id="result">
+      <ul id="result_list"></ul>        
+    </div>
+    <div id="nobody" style="display: none;">
+      <p>Aucune personne ne peut vous aider</p>
+      <img src="./img/Appel%20à%20ami.webp" width="100px">
+    </div>
 
-       <script>
-          $('#skillInput').change(searchSkills);
-            var dbname = 'skillspointer';
+    <script>
+      $('#skillInput').change(searchSkills);
 
-           function searchSkills() {
-              var persons = JSON.parse(localStorage[dbname]).persons;
-              var recommendations = JSON.parse(localStorage[dbname]).recommendations;
-              
-               $("#result_list").empty();
-               $("#nobody").hide();
-               
-                var searchedSkill = document.getElementById("skillInput").value;
+      function searchSkills() {
+        let persons = db.get('persons');
+        let recommendations = db.get('recommendations');
 
-                var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
+        $("#result_list").empty();
+        $("#nobody").hide();
 
-                if (findRecommendation.length > 0)
-                {
-                    console.log("Results found");
-                    var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.recommendee === p.id)) ;
+        var searchedSkill = document.getElementById("skillInput").value;
 
-                    peopleWithSkill.forEach(p => {
-                        $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
-                        
-                    });  
-                }         
-                else{
-                    console.log("No results found");
-                    $("#nobody").show();
-                }      
-           }
-       </script>
+        var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
 
-   </body>
+        if (findRecommendation.length > 0)
+        {
+          console.log("Results found");
+          var peopleWithSkill = persons.filter(p => findRecommendation.find(r => r.recommendee === p.id));
+
+          peopleWithSkill.forEach(p => {
+            $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
+
+          });
+        } else {
+          console.log("No results found");
+          $("#nobody").show();
+        }
+      }
+    </script>
+
+  </body>
 </HTML>

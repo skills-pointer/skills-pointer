@@ -1,92 +1,53 @@
 <HTML >
-    <HEAD>
-        <title>Skills pointer - recommend a colleague!</title>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    </HEAD> 
-    <body>
-        <div id="welcome"></div>
+  <HEAD>
+    <title>Skills pointer - recommend a colleague!</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="db.js"></script>
 
-        <p>Mon collègue</p>
-        <input id="name" type="text" placeholder="ex: Marie">
-        m'a aidé avec
-        <input id="skill" type="text" placeholder="compétence">
-        <button onclick="recommend()">recommander</button>
+  </HEAD> 
+  <body>
+    <p id="welcome"></p>
 
-        <div id="result">
-        </div>
+    Mon collègue
+    <input id="name" type="text" placeholder="ex: Marie">
+    m'a aidé avec
+    <input id="skill" type="text" placeholder="compétence">
+    <button onclick="recommend()">recommander</button>
 
-        <script>
-            
-            var dbname = 'skillspointer';
-            if (!localStorage[dbname]) {
-                localStorage[dbname] = JSON.stringify({
-                    persons: [
-                        {
-                            "id": 1,
-                            "name": "John Doe",
-                            "location": "Meylan"
-                        },
-                        {
-                            "id": 2,
-                            "name": "John Doe",
-                            "location": "Meylan"
-                        },
-                        {
-                            "id": 3,
-                            "name": "Bastien David",
-                            "location": "Meylan"
-                        },
-                        {
-                            "id": 4,
-                            "name": "Brice de Nice",
-                            "location": "Sofia Antipolis"
-                        }
-                    ],
+    <div id="result"></div>
 
-                    recommendations: [
-                        {recommender: 4, recommendee: 1, skill: "angular"},
-                        {recommender: 4, recommendee: 1, skill: "C#"},
-                    ]
-                });
-            }
-            var persons = JSON.parse(localStorage[dbname]).persons;
-            var recommendations = JSON.parse(localStorage[dbname]).recommendations;
+    <script>
+      let persons = db.get('persons');
+      let recommendations = db.get('recommendations');
 
-            var user = persons[3];
-            $('#welcome').text('Welcome ' + user.name + '!');
+      var user = persons[3];
+      $('#welcome').text('Welcome ' + user.name + '!');
+      
+      function recommend() {
+        let name = document.getElementById("name").value
+        let skill = document.getElementById("skill").value
 
-            function recommend() {
-                var name = document.getElementById("name").value
-                var skill = document.getElementById("skill").value
+        let searchResults = persons.filter(p => p.name == name);
+        var recommendee;
+        if (searchResults.length == 0) {
+          var personId = searchResults.length + 1;
+          recommendee = {
+            "id": personId,
+            "name": name,
+            "location": "Meylan"
+          };
+          persons.push(recommendee);
+        } else {
+          recommendee = searchResults[0];
+        }
 
-                var person = persons.filter(p => p.name == name);
-                var recommendee;
-                if (person.length == 0) {
-                    var personId = persons.length + 1;
-                    recommendee = {
-                        "id": personId,
-                        "name": name,
-                        "location": "Meylan"
-                    };
-                    persons.push(recommendee);
-                } else {
-                    recommendee = person[0];
-                }
+        recommendation = {recommender: user.id, recommendee: recommendee.id, skill: skill};
+        recommendations.push(recommendation);
 
-                recommendation = {recommender: user.id, recommendee: recommendee.id, skill: skill};
-                recommendations.push(recommendation);
-                localStorage[dbname] = JSON.stringify({
-                    persons:persons,
-                    recommendations:recommendations
-                });
-
-                console.log(persons, recommendations);
-            }
-
-            function searchSkills() {
-                console.log(db)
-            }
-
-        </script>
-    </body>
+        db.set('persons',persons);
+        db.set('recommendations',recommendations);
+        //console.log(persons, recommendations);
+      }
+    </script>
+  </body>
 </HTML>
