@@ -1,0 +1,68 @@
+<HTML >
+    <HEAD>
+        <title>Skills pointer - recommend a colleague!</title>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </HEAD> 
+    <body>
+        <p>Qui pourrait m'aider sur...</p>
+        <input id="skillInput" type="text" placeholder="ex : Angular">
+        <button onclick="searchSkills()">OK</button>
+
+
+        <div id="result">
+            <ul id="result_list">
+
+            </ul>        
+        </div>
+
+        <hr>
+
+        <p>Mon collègue</p>
+        <input id="name" type="text" placeholder="ex: Marie">
+        m'a aidé avec
+        <input id="skill" type="text" placeholder="compétence">
+        <button onclick="recommend()">recommander</button>
+
+        <div id="result">
+        </div>
+
+        <script>
+            var db = [
+                {
+                    "name": "John Doe",
+                    "location": "Meylan",
+                    "recommandation": "angular"
+                },
+                {
+                    "name": "John Doe",
+                    "location": "Meylan",
+                    "recommandation": "gestion de conflit"
+                }, {
+                    "name": "Bastien David",
+                    "location": "Meylan",
+                    "recommandation": "git"
+                },
+                {
+                    "name": "Brice de Nice",
+                    "location": "Sofia Antipolis",
+                    "recommandation": "angular"
+                }
+            ];
+
+            function recommend() {
+                console.log('1');
+                var person = {
+                    "name": document.getElementById("name").value,
+                    "location": "Meylan",
+                    "recommandation": document.getElementById("skill").value
+                };
+                db.push(person);
+            }
+
+            function searchSkills() {
+                console.log(db)
+            }
+
+        </script>
+    </body>
+</HTML>
