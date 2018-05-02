@@ -19,20 +19,19 @@
         "location": "Sofia Antipolis",
         "recommandation": "angular"
     },
-    {
+    {
         "name": "Brice de Nice",
         "location": "Sofia Antipolis",
-        "recommandation": "HTML"    
-    },        
-    {        
+        "recommandation": "HTML"
+    },
+    {
         "name": "Brice de Nice",
         "location": "Orange Garden",
-        "recommandation": "HTML"        
+        "recommandation": "HTML"
     },
     {
         "name": "Toto_AA",
         "location": "Orange Garden",
-        "recommandation": "HTML"        
+        "recommandation": "HTML"
     }
 ]
-
