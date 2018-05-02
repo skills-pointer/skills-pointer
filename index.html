@@ -18,41 +18,11 @@
 
        <script>
 
-            var persons = [
-                {
-                    "id":1,
-                    "name": "John Doe",
-                    "location": "Meylan"
-                },
-                {
-                    "id":2,
-                    "name": "John Doe bis",
-                    "location": "Meylan"
-                },
-                {
-                    "id":3,
-                    "name": "Bastien David",
-                    "location": "Meylan"
-                },
-                {
-                    "id":4,
-                    "name": "Brice de Nice",
-                    "location": "Sofia Antipolis"
-                }
-            ];
+            var dbname = 'skillspointer';
+            var persons = JSON.parse(localStorage[dbname]).persons;
+            var recommendations = JSON.parse(localStorage[dbname]).recommendations;
 
-            var recommendations = [
-                {person: 1, skill: "angular"},
-                {person: 1, skill: "GIT"},
-                {person: 2, skill: "C#"},
-                {person: 3, skill: "angular"},
-            ];
-
-            local = 
-            { 
-                persons:persons,
-                recommendations:recommendations
-            }
+console.log(persons,recommendations);
 
            function searchSkills() {
                $("#result_list").empty();
@@ -63,7 +33,7 @@
 
                 if (findRecommendation.length > 0)
                 {
-                    var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.person === p.id)) ;
+                    var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.recommendee === p.id)) ;
 
                     peopleWithSkill.forEach(p => {
                         $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
