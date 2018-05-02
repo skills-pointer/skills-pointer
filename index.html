@@ -61,12 +61,15 @@
 
                 var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
 
-                var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.person === p.id)) ;
+                if (findRecommendation.length > 0)
+                {
+                    var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.person === p.id)) ;
 
-                peopleWithSkill.forEach(p => {
-                    $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
-                    
-                });                 
+                    peopleWithSkill.forEach(p => {
+                        $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
+                        
+                    });  
+                }               
            }
        </script>
 
