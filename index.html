@@ -17,51 +17,50 @@
 
        <script>
 
-            var recommandations = [
-    {
-        "name": "John Doe",
-        "location": "Meylan",
-        "recommandation": "angular"
-    },
-    {
-        "name": "John Doe",
-        "location": "Meylan",
-        "recommandation": "gestion de conflit"
-    },
-    {
-        "name": "Bastien David",
-        "location": "Meylan",
-        "recommandation": "git"
-    },
-    {
-        "name": "Brice de Nice",
-        "location": "Sofia Antipolis",
-        "recommandation": "angular"
-    },
-    {
-        "name": "Brice de Nice",
-        "location": "Sofia Antipolis",
-        "recommandation": "HTML"
-    },
-    {
-        "name": "Brice de Nice",
-        "location": "Orange Garden",
-        "recommandation": "HTML"
-    },
-    {
-        "name": "Toto_AA",
-        "location": "Orange Garden",
-        "recommandation": "HTML"
-    }
-];
+            var persons = [
+                {
+                    "id":1,
+                    "name": "John Doe",
+                    "location": "Meylan"
+                },
+                {
+                    "id":2,
+                    "name": "John Doe bis",
+                    "location": "Meylan"
+                },
+                {
+                    "id":3,
+                    "name": "Bastien David",
+                    "location": "Meylan"
+                },
+                {
+                    "id":4,
+                    "name": "Brice de Nice",
+                    "location": "Sofia Antipolis"
+                }
+            ];
 
-            
+            var recommendations = [
+                {person: 1, skill: "angular"},
+                {person: 1, skill: "GIT"},
+                {person: 2, skill: "C#"},
+                {person: 3, skill: "angular"},
+            ];
+
+            local = 
+            { 
+                persons:persons,
+                recommendations:recommendations
+            }
+
            function searchSkills() {
                $("#result_list").empty();
 
                 var searchedSkill = document.getElementById("skillInput").value;
 
-                peopleWithSkill = recommandations.filter(people => people.recommandation === searchedSkill);
+                var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
+
+                var peopleWithSkill = persons.filter( p => findRecommendation.find( r => r.person === p.id)) ;
 
                 peopleWithSkill.forEach(p => {
                     $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
