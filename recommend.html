@@ -27,36 +27,55 @@
         </div>
 
         <script>
-            var db = [
+            var persons = [
                 {
+                    "id":1,
                     "name": "John Doe",
-                    "location": "Meylan",
-                    "recommandation": "angular"
+                    "location": "Meylan"
                 },
                 {
+                    "id":2,
                     "name": "John Doe",
-                    "location": "Meylan",
-                    "recommandation": "gestion de conflit"
-                }, {
+                    "location": "Meylan"
+                },
+                {
+                    "id":3,
                     "name": "Bastien David",
-                    "location": "Meylan",
-                    "recommandation": "git"
+                    "location": "Meylan"
                 },
                 {
+                    "id":4,
                     "name": "Brice de Nice",
-                    "location": "Sofia Antipolis",
-                    "recommandation": "angular"
+                    "location": "Sofia Antipolis"
                 }
             ];
 
+            var recommendations = [
+                {person: 1, skill: "angular"},
+                {person: 1, skill: "C#"},
+            ];
+
             function recommend() {
-                console.log('1');
-                var person = {
-                    "name": document.getElementById("name").value,
-                    "location": "Meylan",
-                    "recommandation": document.getElementById("skill").value
-                };
-                db.push(person);
+                var name=document.getElementById("name").value
+                var skill=document.getElementById("skill").value
+
+                var person=persons.filter(p=>p.name==name);
+                var recommendee;
+                if(person.length==0) {
+                    var personId = persons.length+2;
+                    recommendee={
+                        "id":personId,
+                        "name":name,
+                        "location":"Meylan"
+                    };
+                    persons.push(recommendee);
+                } else {
+                    recommendee=person[0];
+                }
+                
+                recommendations.push({"person":recommendee.id,"skill":skill});
+                
+                console.log(persons,recommendations);
             }
 
             function searchSkills() {
