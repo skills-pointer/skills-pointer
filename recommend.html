@@ -4,18 +4,7 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </HEAD> 
     <body>
-        <p>Qui pourrait m'aider sur...</p>
-        <input id="skillInput" type="text" placeholder="ex : Angular">
-        <button onclick="searchSkills()">OK</button>
-
-
-        <div id="result">
-            <ul id="result_list">
-
-            </ul>        
-        </div>
-
-        <hr>
+        <div id="welcome"></div>
 
         <p>Mon collègue</p>
         <input id="name" type="text" placeholder="ex: Marie">
@@ -27,55 +16,71 @@
         </div>
 
         <script>
-            var persons = [
-                {
-                    "id":1,
-                    "name": "John Doe",
-                    "location": "Meylan"
-                },
-                {
-                    "id":2,
-                    "name": "John Doe",
-                    "location": "Meylan"
-                },
-                {
-                    "id":3,
-                    "name": "Bastien David",
-                    "location": "Meylan"
-                },
-                {
-                    "id":4,
-                    "name": "Brice de Nice",
-                    "location": "Sofia Antipolis"
-                }
-            ];
+            
+            var dbname = 'skillspointer';
+            if (!localStorage[dbname]) {
+                localStorage[dbname] = JSON.stringify({
+                    persons: [
+                        {
+                            "id": 1,
+                            "name": "John Doe",
+                            "location": "Meylan"
+                        },
+                        {
+                            "id": 2,
+                            "name": "John Doe",
+                            "location": "Meylan"
+                        },
+                        {
+                            "id": 3,
+                            "name": "Bastien David",
+                            "location": "Meylan"
+                        },
+                        {
+                            "id": 4,
+                            "name": "Brice de Nice",
+                            "location": "Sofia Antipolis"
+                        }
+                    ],
 
-            var recommendations = [
-                {person: 1, skill: "angular"},
-                {person: 1, skill: "C#"},
-            ];
+                    recommendations: [
+                        {recommender: 4, recommendee: 1, skill: "angular"},
+                        {recommender: 4, recommendee: 1, skill: "C#"},
+                    ]
+                });
+            }
+            var persons = JSON.parse(localStorage[dbname]).persons;
+            var recommendations = JSON.parse(localStorage[dbname]).recommendations;
+
+            var user = persons[3];
+            $('#welcome').text('Welcome ' + user.name + '!');
 
             function recommend() {
-                var name=document.getElementById("name").value
-                var skill=document.getElementById("skill").value
+                var name = document.getElementById("name").value
+                var skill = document.getElementById("skill").value
 
-                var person=persons.filter(p=>p.name==name);
+                var person = persons.filter(p => p.name == name);
                 var recommendee;
-                if(person.length==0) {
-                    var personId = persons.length+2;
-                    recommendee={
-                        "id":personId,
-                        "name":name,
-                        "location":"Meylan"
+                if (person.length == 0) {
+                    var personId = persons.length + 1;
+                    recommendee = {
+                        "id": personId,
+                        "name": name,
+                        "location": "Meylan"
                     };
                     persons.push(recommendee);
                 } else {
-                    recommendee=person[0];
+                    recommendee = person[0];
                 }
-                
-                recommendations.push({"person":recommendee.id,"skill":skill});
-                
-                console.log(persons,recommendations);
+
+                recommendation = {recommender: user.id, recommendee: recommendee.id, skill: skill};
+                recommendations.push(recommendation);
+                localStorage[dbname] = JSON.stringify({
+                    persons:persons,
+                    recommendations:recommendations
+                });
+
+                console.log(persons, recommendations);
             }
 
             function searchSkills() {
