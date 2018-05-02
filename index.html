@@ -15,36 +15,59 @@
            </ul>        
        </div>
 
-       
-
        <script>
-           var people = {
-               1: 'John Doe',
-               2: 'Iron Man',
-               3: 'Fred Flintstone'
-           }
-         
-           var recommendations = {
-               'angular':[1,2,3]
-           }
 
+            var recommandations = [
+    {
+        "name": "John Doe",
+        "location": "Meylan",
+        "recommandation": "angular"
+    },
+    {
+        "name": "John Doe",
+        "location": "Meylan",
+        "recommandation": "gestion de conflit"
+    },
+    {
+        "name": "Bastien David",
+        "location": "Meylan",
+        "recommandation": "git"
+    },
+    {
+        "name": "Brice de Nice",
+        "location": "Sofia Antipolis",
+        "recommandation": "angular"
+    },
+    {
+        "name": "Brice de Nice",
+        "location": "Sofia Antipolis",
+        "recommandation": "HTML"
+    },
+    {
+        "name": "Brice de Nice",
+        "location": "Orange Garden",
+        "recommandation": "HTML"
+    },
+    {
+        "name": "Toto_AA",
+        "location": "Orange Garden",
+        "recommandation": "HTML"
+    }
+];
+
+            
            function searchSkills() {
-                var searchedSkill = document.getElementById("skillInput").value;
-                if (searchedSkill === "angular") {
-                    var li1 = document.createElement('li');
-                    li1.innerHTML = 'John Doe';
-                    document.getElementById("result_list").appendChild(li1)
+               $("#result_list").empty();
 
-                    var li2 = document.createElement('li');
-                    li2.innerHTML = 'Iron Man';
-                    document.getElementById("result_list").appendChild(li2)
-                }
-                else{
-                    var paragraphe = document.createElement('p');
-                    paragraphe.innerHTML = "personne ne peut vous aider... :(   "
-                    document.getElementById("result_list").appendChild(paragraphe)
+                var searchedSkill = document.getElementById("skillInput").value;
+
+                peopleWithSkill = recommandations.filter(people => people.recommandation === searchedSkill);
+
+                peopleWithSkill.forEach(p => {
+                    $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
                     
-                }
+                });
+                
            }
        </script>
 
