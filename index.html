@@ -5,9 +5,10 @@
    </HEAD> 
    <body>
        <p>Qui pourrait m'aider sur...</p>
-       <input id="skillInput" type="text" placeholder="ex : Angular">
-       <button onclick="searchSkills()">OK</button>
-
+       <form action="" onSubmit="searchSkills(); return false;">
+            <input id="skillInput" type="text" placeholder="ex : angular">
+            <button>OK</button>
+        </form>
 
        <div id="result">
            <ul id="result_list">
@@ -65,8 +66,7 @@
                 peopleWithSkill.forEach(p => {
                     $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
                     
-                });
-                
+                });                 
            }
        </script>
 
