@@ -13,20 +13,25 @@
     <link rel="stylesheet" href="app.css">
 
     <script>
+      let persons;
+      let recommendations;
+      let user;
+
       $(function () {
         $("#main").tabs({active: 0});
 
-        let persons = db.get('persons');
-        let recommendations = db.get('recommendations');
+        persons = db.get('persons');
+        recommendations = db.get('recommendations');
+        user = persons[3];
 
-        var user = persons[3];
         $('#welcome').text('Welcome ' + user.name + '!');
       });
     </script>
   </head>
   <body>
     <div id="title" class="banner">
-      skills-pointer
+      <span id="logo">skills-pointer</span>
+      <span id="welcome"></span>
     </div>
 
     <div id="main">
@@ -62,7 +67,7 @@
         </script>
 
         <p>Qui pourrait m'aider sur...</p>
-        <input id="skillInput" type="text" placeholder="ex : angular">
+        <input id="skillInput" type="text" autocomplete="off" placeholder="ex : angular">
         <button onclick="searchSkills()">OK</button>
         <div id="result">
           <ul id="result_list"></ul>        
@@ -76,43 +81,51 @@
       <div id="recommend">
         <script>
           function recommend() {
-            let name = document.getElementById("name").value
-            let skill = document.getElementById("skill").value
+            let $name = $('#recommend .name');
+            let $skill = $('#recommend .skill');
 
-            let searchResults = persons.filter(p => p.name == name);
+            let searchResults = persons.filter(p => p.name == $name.val());
             var recommendee;
             if (searchResults.length == 0) {
-              var personId = searchResults.length + 1;
+              var personId = persons.length + 1;
               recommendee = {
-                "id": personId,
-                "name": name,
-                "location": "Meylan"
+                'id': personId,
+                'name': $name.val(),
+                'location': 'Meylan'
               };
               persons.push(recommendee);
             } else {
               recommendee = searchResults[0];
             }
 
-            recommendation = {recommender: user.id, recommendee: recommendee.id, skill: skill};
+            recommendation = {recommender: user.id, recommendee: recommendee.id, skill: $skill.val()};
             recommendations.push(recommendation);
 
             db.set('persons', persons);
             db.set('recommendations', recommendations);
-            //console.log(persons, recommendations);
+
           }
         </script>
 
-        <p id="welcome"></p>
         Mon coll&egrave;gue
-        <input id="name" type="text" placeholder="ex: Marie">
+        <input class="name" type="text" placeholder="ex: Marie">
         m'a aid&eacute; avec
-        <input id="skill" type="text" placeholder="ex : angular">
+        <input class="skill" type="text" placeholder="ex : angular">
         <button onclick="recommend()">recommander</button>
         <div id="result"></div>
       </div>
 
       <div id="settings">
-        TODO
+        <h3>persons</h3>
+        <div id="persons"></div>
+        <h3>recommendations</h3>
+        <div id="recommendations"></div>
+        <script>
+          $(function() {
+            $('#persons').text(JSON.stringify(persons));
+            $('#recommendations').text(JSON.stringify(recommendations));
+          });
+        </script>
       </div>
     </div>
   </body>
