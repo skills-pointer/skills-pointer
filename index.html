@@ -43,8 +43,8 @@
             let $skills = $('#find .skills'); // TODO allow multiple skills
             let recommendations = service.findRecommendedPersonsFor($skills.val());
             if (Object.keys(recommendations).length > 0) {
-              for(let id in recommendations) {
-                let person=service.findPerson(id);
+              for (let id in recommendations) {
+                let person = service.findPerson(id);
                 $("#result_list").append($(`<li>${person.name} (${person.location}) [${recommendations[id]}]</li>`));
               }
             } else {
@@ -53,7 +53,7 @@
           }
 
           $(function () {
-            $('#find .skills').change(function() {
+            $('#find .skills').change(function () {
               this.blur();
               displayRecommendedPeopleForSkills();
             });
@@ -77,20 +77,11 @@
         <script>
           function recommend() {
             let $name = $('#recommend .name');
-            let $skill = $('#recommend .skill');
-
             let candidates = service.findPersons($name.val());
-            let recommendee;
-            if (candidates.length == 0) {
-              recommendee = service.createPerson($name.val());
-            } else {
-              recommendee = candidates[0];
-            }
-
-            recommendation = {recommender: user.id, recommendee: recommendee.id, skill: $skill.val()};
-            recommendations.push(recommendation);
-
-            db.set('recommendations', recommendations);
+            let recommendee = candidates.length ? candidates[0] : service.createPerson($name.val());
+            
+            let $skill = $('#recommend .skill');
+            service.recommend(user.id, recommendee.id, $skill.val());
 
             $name.val('');
             $skill.val('');
@@ -134,24 +125,25 @@
               $('#test').append(`<div style="color: ${style}">${title}</div>`);
             }
 
-            let service = new Service('skill-pointer-test');
+            let service = new Service('skills-pointer-test');
             service.reset();
 
             test('find person by id', () => {
               let p = service.findPerson(1);
-              return p && p.name=='Mary Doe';
+              return p && p.name == 'Mary Doe';
             });
-            
+
             test('find persons by "query"', () => {
-              let p = service.findPersons('Doe');
-              return p.length==2;
+              let persons = service.findPersons('Doe');
+              return persons.length == 2;
             });
 
             test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
-              return fred.id==4;
+              console.log(fred,service)
+              return fred.id == 4;
             });
-            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length==3);
+            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length == 3);
 
             let personsWithAndroidSkills;
             test('find recommended persons for Android skills', () => {
@@ -160,6 +152,14 @@
             });
             test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
             test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
+
+            test('recommend someone', () => {
+              let recommendation = service.recommend(0, 1, 'agile');
+              return recommendation.skill == 'agile';
+            });
+            test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 4);
+
+            //TODO remove from localStorage
           });
         </script>
       </div>

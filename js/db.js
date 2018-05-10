@@ -19,6 +19,6 @@ class Database {
     return JSON.parse(localStorage[this.name]);
   }
   _set(data) {
-    return localStorage[this.name] = JSON.stringify(data);
+    localStorage[this.name] = JSON.stringify(data);
   }
 }
