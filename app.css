@@ -45,6 +45,7 @@ html, body {
 #menu li a {
   color: white;
   display: block;
+  font-weight: bold;
   outline-width: 0;
   padding: 16px;
   text-decoration: none;
