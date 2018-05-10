@@ -40,7 +40,7 @@ const SAMPLE_DATA = {
 class Service {
   constructor(database) {
     this.db = new Database(database);
-    if(!this.db.get('persons')) {
+    if (!this.db.get('persons')) {
       this.reset();
     }
     this.cache();
@@ -53,14 +53,14 @@ class Service {
 
   // GET .../resources/persons?query=<query>
   findPersons(query) {
-    let result=this.persons.filter(p => p.name.includes(query));
+    let result = this.persons.filter(p => p.name.includes(query));
     return result;
   }
 
   // PUT .../resources/persons
   createPerson(name) {
     let person = {
-      'id': persons.length,
+      'id': this.persons.length,
       'name': name,
       'location': 'Meylan'
     };
@@ -70,7 +70,7 @@ class Service {
   }
 
   // POST .../services/recommend
-  recommend(recommender,recommendee,skill) {
+  recommend(recommender, recommendee, skill) {
     let recommendation = {
       recommender: recommender,
       recommendee: recommendee,
@@ -81,11 +81,10 @@ class Service {
     return recommendation;
   }
 
-  // POST .../service/recommended-persons-for?skill=<skill>
+  // POST .../service/find-recommended-persons-for?skill=<skill>
   findRecommendedPersonsFor(skill) {
     let result = {};
-    this.db
-            .get('recommendations')
+    this.recommendations
             .filter(r => r.skill === skill)
             .forEach(r => {
               if (result[r.recommendee]) {
@@ -103,7 +102,7 @@ class Service {
     }
     this.cache();
   }
-  
+
   cache() {
     this.persons = this.db.get('persons');
     this.recommendations = this.db.get('recommendations');
@@ -116,8 +115,4 @@ if (!service.findPerson(0)) { // just a hack to reset old databases (TODO add re
   service.reset();
 }
 
-const db = service.db; //TODO get rid of this, obviously
-let persons = db.get('persons');
-let recommendations = db.get('recommendations');
-
-let user = persons[3];
+let user = service.findPerson(3);

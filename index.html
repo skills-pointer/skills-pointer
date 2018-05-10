@@ -61,9 +61,11 @@
           });
         </script>
 
-        <p>Qui pourrait m'aider sur...</p>
-        <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
-        <button>OK</button>
+        <p>
+          Qui pourrait m'aider sur
+          <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
+          <button>?</button>
+        </p>
         <div id="result">
           <ul id="result_list"></ul>        
         </div>
@@ -79,7 +81,7 @@
             let $name = $('#recommend .name');
             let candidates = service.findPersons($name.val());
             let recommendee = candidates.length ? candidates[0] : service.createPerson($name.val());
-            
+
             let $skill = $('#recommend .skill');
             service.recommend(user.id, recommendee.id, $skill.val());
 
@@ -140,7 +142,7 @@
 
             test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
-              console.log(fred,service)
+              console.log(fred, service)
               return fred.id == 4;
             });
             test('* must now find 3 "Doe" persons', service.findPersons('Doe').length == 3);
@@ -157,7 +159,7 @@
               let recommendation = service.recommend(0, 1, 'agile');
               return recommendation.skill == 'agile';
             });
-            test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 4);
+            test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
 
             //TODO remove from localStorage
           });
