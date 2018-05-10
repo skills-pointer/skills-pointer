@@ -153,7 +153,13 @@
               let p = service.findPersons('Doe');
               return p.length==2;
             });
-            
+
+            test('create new person', () => {
+              let fred = service.createPerson('Fred Doe');
+              return fred.id==4;
+            });
+            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length==3);
+
             let personsWithAndroidSkills;
             test('find recommended persons for Android skills', () => {
               personsWithAndroidSkills = service.findRecommendedPersonsFor('android');

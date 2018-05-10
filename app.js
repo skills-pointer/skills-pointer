@@ -4,29 +4,42 @@ class Service {
     this.db = new Database(database);
   }
 
-  // .../resources/persons/<id>
+  // GET .../resources/persons/<id>
   findPerson(id) {
     return this.db.get('persons')[id];
   }
 
-  // .../resources/persons?query=<query>
+  // GET .../resources/persons?query=<query>
   findPersons(query) {
     return this.db.get('persons').filter(p => p.name.includes(query));
   }
 
-  // .../service/recommended-persons-for?skill=<skill>
+  // PUT .../resources/persons
+  createPerson(name) {
+    let persons = this.db.get('persons');
+    let person = {
+      'id': persons.length,
+      'name': name,
+      'location': 'Meylan'
+    };
+    persons.push(person);
+    this.db.set('persons', persons);
+    return person;
+  }
+
+  // POST .../service/recommended-persons-for?skill=<skill>
   findRecommendedPersonsFor(skill) {
     let result = {};
     this.db
-      .get('recommendations')
-      .filter(r => r.skill === skill)
-      .forEach(r => {
-        if (result[r.recommendee]) {
-          ++result[r.recommendee];
-        } else {
-          result[r.recommendee] = 1;
-         }
-      });
+            .get('recommendations')
+            .filter(r => r.skill === skill)
+            .forEach(r => {
+              if (result[r.recommendee]) {
+                ++result[r.recommendee];
+              } else {
+                result[r.recommendee] = 1;
+              }
+            });
     return result;
   }
 
@@ -39,7 +52,7 @@ class Service {
 
 
 const service = new Service('skillspointer');
-if(!service.findPerson(0)) { // just a hack to reset old databases (TODO add reset feature on "settings" tab ?)
+if (!service.findPerson(0)) { // just a hack to reset old databases (TODO add reset feature on "settings" tab ?)
   service.reset();
 }
 
@@ -82,7 +95,7 @@ const SAMPLE_DATA = {
     {recommender: 0, recommendee: 1, skill: "android"},
     {recommender: 0, recommendee: 2, skill: "android"},
     {recommender: 0, recommendee: 3, skill: "android"},
-    
+
     {recommender: 1, recommendee: 3, skill: "android"},
   ]
 };
