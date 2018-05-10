@@ -1,51 +1,174 @@
-<HTML >
-  <HEAD>
-    <title>Skills pointer - find help</title>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="db.js"></script>
-  </HEAD> 
-  <body>
-    <p>Qui pourrait m'aider sur...</p>
-    <input id="skillInput" type="text" placeholder="ex : angular">
-    <button onclick="searchSkills()">OK</button>
+<html>
+  <head>
+    <title>skills-pointer</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div id="result">
-      <ul id="result_list"></ul>        
-    </div>
-    <div id="nobody" style="display: none;">
-      <p>Aucune personne ne peut vous aider</p>
-      <img src="./img/Appel%20à%20ami.webp" width="100px">
-    </div>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="db.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <script>
-      $('#skillInput').change(searchSkills);
+      $(function () {
+        $("#main").tabs({active: 0});
 
-      function searchSkills() {
         let persons = db.get('persons');
         let recommendations = db.get('recommendations');
 
-        $("#result_list").empty();
-        $("#nobody").hide();
-
-        var searchedSkill = document.getElementById("skillInput").value;
-
-        var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
-
-        if (findRecommendation.length > 0)
-        {
-          console.log("Results found");
-          var peopleWithSkill = persons.filter(p => findRecommendation.find(r => r.recommendee === p.id));
-
-          peopleWithSkill.forEach(p => {
-            $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
-
-          });
-        } else {
-          console.log("No results found");
-          $("#nobody").show();
-        }
-      }
+        var user = persons[3];
+        $('#welcome').text('Welcome ' + user.name + '!');
+      });
     </script>
 
+    <style>
+      html, body {
+        font-family: sans-serif;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+      }
+
+      .banner {
+        user-select: none;
+        width: 100%;
+      }
+      #title {
+        background-color: black;
+        color: white;
+        font-size: 200%;
+        padding: 16px;
+      }
+      #menu {
+        background-color: #111;
+        color: white;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #menu li {
+        float: left;
+      }
+      #menu li.right {
+        float: right;
+      }
+      #menu li a {
+        color: white;
+        display: block;
+        outline-width: 0;
+        padding: 16px;
+        text-decoration: none;
+      }
+      #menu li a > i {
+        vertical-align:middle;
+      }
+      #menu li.ui-state-active a {
+        color: orange;
+        cursor: default;
+      }
+      #menu li:not(.ui-state-active) a:hover {
+        cursor: pointer;
+        color: orange;
+      }
+
+      #main .ui-tabs-panel {
+        padding: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="title" class="banner">
+      skills-pointer
+    </div>
+
+    <div id="main">
+      <ul id="menu" class="banner">
+        <li><a href="#find"><i class="material-icons">search</i> find</a></li>
+        <li><a href="#recommend"><i class="material-icons">thumb_up</i> recommend</a></li>
+        <li class="right"><a href="#settings"><i class="material-icons">settings</i> settings</a></li>
+      </ul>
+
+      <div id="find">
+        <script>
+          function searchSkills() {
+            $("#result_list").empty();
+            $("#nobody").hide();
+
+            var searchedSkill = document.getElementById("skillInput").value;
+            var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
+            if (findRecommendation.length > 0) {
+              console.log("Results found");
+              var peopleWithSkill = persons.filter(p => findRecommendation.find(r => r.recommendee === p.id));
+              peopleWithSkill.forEach(p => {
+                $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
+              });
+            } else {
+              console.log("No results found");
+              $("#nobody").show();
+            }
+          }
+
+          $(function () {
+            $('#skillInput').change(searchSkills);
+          });
+        </script>
+
+        <p>Qui pourrait m'aider sur...</p>
+        <input id="skillInput" type="text" placeholder="ex : angular">
+        <button onclick="searchSkills()">OK</button>
+        <div id="result">
+          <ul id="result_list"></ul>        
+        </div>
+        <div id="nobody" style="display: none;">
+          <p>Personne ne peut vous aider</p>
+          <img src="img/Appel%20à%20ami.webp" width="100">
+        </div>
+      </div>
+
+      <div id="recommend">
+        <script>
+          function recommend() {
+            let name = document.getElementById("name").value
+            let skill = document.getElementById("skill").value
+
+            let searchResults = persons.filter(p => p.name == name);
+            var recommendee;
+            if (searchResults.length == 0) {
+              var personId = searchResults.length + 1;
+              recommendee = {
+                "id": personId,
+                "name": name,
+                "location": "Meylan"
+              };
+              persons.push(recommendee);
+            } else {
+              recommendee = searchResults[0];
+            }
+
+            recommendation = {recommender: user.id, recommendee: recommendee.id, skill: skill};
+            recommendations.push(recommendation);
+
+            db.set('persons', persons);
+            db.set('recommendations', recommendations);
+            //console.log(persons, recommendations);
+          }
+        </script>
+
+        <p id="welcome"></p>
+        Mon coll&egrave;gue
+        <input id="name" type="text" placeholder="ex: Marie">
+        m'a aid&eacute; avec
+        <input id="skill" type="text" placeholder="ex : angular">
+        <button onclick="recommend()">recommander</button>
+        <div id="result"></div>
+      </div>
+
+      <div id="settings">
+        TODO
+      </div>
+    </div>
   </body>
-</HTML>
+</html>
