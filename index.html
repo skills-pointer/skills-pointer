@@ -82,13 +82,7 @@
             let candidates = service.findPersons($name.val());
             let recommendee;
             if (candidates.length == 0) {
-              let id = persons.length;
-              recommendee = {
-                'id': personId,
-                'name': $name.val(),
-                'location': 'Meylan'
-              };
-              persons.push(recommendee);
+              recommendee = service.createPerson($name.val());
             } else {
               recommendee = candidates[0];
             }
@@ -96,7 +90,6 @@
             recommendation = {recommender: user.id, recommendee: recommendee.id, skill: $skill.val()};
             recommendations.push(recommendation);
 
-            db.set('persons', persons);
             db.set('recommendations', recommendations);
 
             $name.val('');
