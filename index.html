@@ -40,16 +40,14 @@
             $("#result_list").empty();
             $("#nobody").hide();
 
-            let $skills = $('#find .skills');
-            var findRecommendation = recommendations.filter(r => r.skill === $skills.val());
-            if (findRecommendation.length > 0) {
-              console.log("Results found");
-              var peopleWithSkill = persons.filter(p => findRecommendation.find(r => r.recommendee === p.id));
-              peopleWithSkill.forEach(p => {
-                $("#result_list").append($("<li>" + p.name + " (" + p.location + ")</li>"));
-              });
+            let $skills = $('#find .skills'); // TODO allow multiple skills
+            let recommendations = service.findPersonsWithSkill($skills.val());
+            if (Object.keys(recommendations).length > 0) {
+              for(let id in recommendations) {
+                let person=service.findPerson(id);
+                $("#result_list").append($(`<li>${person.name} (${person.location}) [${recommendations[id]}]</li>`));
+              }
             } else {
-              console.log("No results found");
               $("#nobody").show();
             }
           }
@@ -80,7 +78,7 @@
             let searchResults = persons.filter(p => p.name == $name.val());
             var recommendee;
             if (searchResults.length == 0) {
-              var personId = persons.length + 1;
+              var personId = persons.length;
               recommendee = {
                 'id': personId,
                 'name': $name.val(),
@@ -142,15 +140,19 @@
             let service = new Service('skill-pointer-test');
             service.reset();
 
-            let personsWithAndroidSkills;
 
+            test('find person', () => {
+              let p = service.findPerson(1);
+              return p && p.name=='Mary Doe';
+            });
+            
+            let personsWithAndroidSkills;
             test('find persons with Android skills', () => {
               personsWithAndroidSkills = service.findPersonsWithSkill('android');
               return personsWithAndroidSkills instanceof Object;
             });
-
             test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
-            test('* must indicate 2 recommendations for person 4', personsWithAndroidSkills[4] === 2);
+            test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
           });
         </script>
       </div>
