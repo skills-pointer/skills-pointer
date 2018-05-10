@@ -41,7 +41,7 @@
             $("#nobody").hide();
 
             let $skills = $('#find .skills'); // TODO allow multiple skills
-            let recommendations = service.findPersonsWithSkill($skills.val());
+            let recommendations = service.findRecommendedPersonsFor($skills.val());
             if (Object.keys(recommendations).length > 0) {
               for(let id in recommendations) {
                 let person=service.findPerson(id);
@@ -57,9 +57,8 @@
               this.blur();
               displayRecommendedPeopleForSkills();
             });
+            $('#find button').click(displayRecommendedPeopleForSkills);
           });
-          $('#find button').click(displayRecommendedPeopleForSkills);
-
         </script>
 
         <p>Qui pourrait m'aider sur...</p>
@@ -80,10 +79,10 @@
             let $name = $('#recommend .name');
             let $skill = $('#recommend .skill');
 
-            let searchResults = persons.filter(p => p.name == $name.val());
-            var recommendee;
-            if (searchResults.length == 0) {
-              var personId = persons.length;
+            let candidates = service.findPersons($name.val());
+            let recommendee;
+            if (candidates.length == 0) {
+              let id = persons.length;
               recommendee = {
                 'id': personId,
                 'name': $name.val(),
@@ -91,7 +90,7 @@
               };
               persons.push(recommendee);
             } else {
-              recommendee = searchResults[0];
+              recommendee = candidates[0];
             }
 
             recommendation = {recommender: user.id, recommendee: recommendee.id, skill: $skill.val()};
@@ -145,15 +144,19 @@
             let service = new Service('skill-pointer-test');
             service.reset();
 
-
-            test('find person', () => {
+            test('find person by id', () => {
               let p = service.findPerson(1);
               return p && p.name=='Mary Doe';
             });
             
+            test('find persons by "query"', () => {
+              let p = service.findPersons('Doe');
+              return p.length==2;
+            });
+            
             let personsWithAndroidSkills;
-            test('find persons with Android skills', () => {
-              personsWithAndroidSkills = service.findPersonsWithSkill('android');
+            test('find recommended persons for Android skills', () => {
+              personsWithAndroidSkills = service.findRecommendedPersonsFor('android');
               return personsWithAndroidSkills instanceof Object;
             });
             test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);

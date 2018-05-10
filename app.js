@@ -1,16 +1,25 @@
+// TODO make interface asynchronous, for REST implementation
 class Service {
   constructor(database) {
     this.db = new Database(database);
   }
 
+  // .../resources/persons/<id>
   findPerson(id) {
     return this.db.get('persons')[id];
   }
 
-  findPersonsWithSkill(skill) {
+  // .../resources/persons?query=<query>
+  findPersons(query) {
+    return this.db.get('persons').filter(p => p.name.includes(query));
+  }
+
+  // .../service/recommended-persons-for?skill=<skill>
+  findRecommendedPersonsFor(skill) {
     let result = {};
     this.db
-      .get('recommendations').filter(r => r.skill === skill)
+      .get('recommendations')
+      .filter(r => r.skill === skill)
       .forEach(r => {
         if (result[r.recommendee]) {
           ++result[r.recommendee];
