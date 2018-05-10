@@ -13,7 +13,7 @@ const SAMPLE_DATA = {
     {
       "id": 2,
       "name": "Bastien David",
-      "location": "Meylan"
+      "location": "Grenoble"
     },
     {
       "id": 3,
@@ -96,6 +96,18 @@ class Service {
     return result;
   }
 
+  // POST .../service/find-distance?from=<from>&to=<to>
+  findDistanceLabel(from,to) {
+    from=from.toLowerCase();
+    to=to.toLowerCase();
+    let matrix={
+      'lyon':100,
+      'paris':650,
+      'sofia antipolis':350
+    };
+    return from===to?'local!':`${matrix[to]} kms`;
+  }
+
   reset() {
     for (let collection in SAMPLE_DATA) {
       this.db.set(collection, SAMPLE_DATA[collection]);
@@ -111,4 +123,4 @@ class Service {
 
 
 const service = new Service('skills-pointer');
-const user = service.findPerson(3);
+const user = service.findPerson(0);

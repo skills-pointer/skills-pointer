@@ -37,18 +37,37 @@
       <div id="find">
         <script>
           function displayRecommendedPeopleForSkills() {
-            $("#result_list").empty();
-            $("#nobody").hide();
+            let $table = $('#find table');
+            let $tbody = $table.children('tbody');
+            let $nobody = $('#nobody');
+            $(".result").children().hide();
+
+            $tbody.empty();
 
             let $skills = $('#find .skills'); // TODO allow multiple skills
             let recommendations = service.findRecommendedPersonsFor($skills.val());
             if (Object.keys(recommendations).length > 0) {
+              let counter=0;
               for (let id in recommendations) {
                 let person = service.findPerson(id);
-                $("#result_list").append($(`<li>${person.name} (${person.location}) [${recommendations[id]}]</li>`));
+                let email='blablabla@orange.com';
+                let phone='+33.'+(''+Math.random()).slice(-10);
+                let distance=service.findDistanceLabel(user.location,person.location);
+                let time=['free until 17:00','busy until 13:00','away until tomorrow'][counter%3];
+                let rank='<i class="material-icons">thumb_up</i>'.repeat(Math.min(recommendations[id],10));
+                $tbody.append(`<tr>
+                                 <td><i class="material-icons">face</i></td>
+                                 <td><b>${person.name}</b><br>${person.location}</td>
+                                 <td>${email}<br>${phone}</td>
+                                 <td><i class="material-icons">place</i> ${distance}</td>
+                                 <td><i class="material-icons">access_time</i> ${time}</td>
+                                 <td>${rank}</td>
+                               </tr>`);
+                ++counter;
               }
+              $table.show();
             } else {
-              $("#nobody").show();
+              $nobody.show();
             }
           }
 
@@ -58,20 +77,36 @@
               displayRecommendedPeopleForSkills();
             });
             $('#find button').click(displayRecommendedPeopleForSkills);
+            
+            displayRecommendedPeopleForSkills();
           });
         </script>
 
         <p>
           Qui pourrait m'aider sur
-          <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
+          <input class="skills" type="text" autocomplete="off" placeholder="ex : angular" value="android">
           <button>?</button>
         </p>
-        <div id="result">
-          <ul id="result_list"></ul>        
-        </div>
-        <div id="nobody" style="display: none;">
-          <p>Personne ne peut vous aider</p>
-          <img src="img/Appel%20à%20ami.webp" width="100">
+        <div class="result">
+          <table style="display: none;">
+            <thead>
+              <tr>
+                <td colspan="3"></td>
+                <td colspan="3" style="text-align: right">
+                  <select name="text">
+                    <option value="site" selected="selected">Closest first</option> 
+                    <option value="time" selected>Earliest available first</option>
+                    <option value="rank">Most recommended first</option>
+                  </select>
+                </td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div id="nobody" style="display: none;">
+            <p>Personne ne peut vous aider</p>
+            <img src="img/Appel%20à%20ami.webp" width="100">
+          </div>
         </div>
       </div>
 
@@ -110,17 +145,17 @@
         <script>
           $(function () {
             function refresh() {
-              for(let collection of ['persons','recommendations']) {
-                let $container=$(`#settings .${collection}`);
+              for (let collection of ['persons', 'recommendations']) {
+                let $container = $(`#settings .${collection}`);
                 let $ul = $container.html('<ul></ul>');
-                for(let entity of service[collection]) {
+                for (let entity of service[collection]) {
                   $ul.append(`<li>${JSON.stringify(entity)}</li>`)
                 }
               }
               /*
-              $('#persons').text(JSON.stringify(service.persons));
-              $('#recommendations').text(JSON.stringify(service.recommendations));
-              */
+               $('#persons').text(JSON.stringify(service.persons));
+               $('#recommendations').text(JSON.stringify(service.recommendations));
+               */
             }
 
             $('#settings button[name=refresh]').click(refresh);
@@ -128,7 +163,7 @@
               service.reset();
               refresh();
             });
-            
+
             refresh();
           });
         </script>
