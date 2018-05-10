@@ -1,7 +1,6 @@
 html, body {
   font-family: sans-serif;
   margin: 0;
-  overflow: hidden;
   padding: 0;
 }
 
@@ -13,9 +12,19 @@ html, body {
 
 #title {
   background-color: black;
+  box-sizing: border-box;
   color: white;
-  font-size: 200%;
   padding: 16px;
+  position: relative;
+}
+#logo {
+  font-size: 200%;
+}
+#welcome {
+  color: grey;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
 }
 
 #menu {
