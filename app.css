@@ -18,10 +18,11 @@ html, body {
   position: relative;
 }
 #logo {
-  font-size: 200%;
+  font-size: 300%;
+  font-weight: bold;
 }
 #welcome {
-  color: grey;
+  color: lightgrey;
   position: absolute;
   bottom: 16px;
   right: 16px;
