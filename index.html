@@ -109,11 +109,12 @@
           }
         </script>
 
-        Mon coll&egrave;gue
-        <input class="name" type="text" placeholder="ex: Marie">
-        m'a aid&eacute; avec
-        <input class="skill" type="text" placeholder="ex : angular">
-        <button onclick="recommend()">recommander</button>
+        <p>Mon coll&egrave;gue
+          <input class="name" type="text" placeholder="ex: Marie">
+          m'a aid&eacute; avec
+          <input class="skill" type="text" placeholder="ex : angular">
+          <button onclick="recommend()">recommander</button>
+        </p>
         <div id="result"></div>
       </div>
 
@@ -123,7 +124,7 @@
         <h3>recommendations</h3>
         <div id="recommendations"></div>
         <script>
-          $(function() {
+          $(function () {
             $('#persons').text(JSON.stringify(persons));
             $('#recommendations').text(JSON.stringify(recommendations));
           });
