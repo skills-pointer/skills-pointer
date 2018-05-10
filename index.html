@@ -100,14 +100,36 @@
       </div>
 
       <div id="settings">
-        <h3>persons</h3>
-        <div id="persons"></div>
-        <h3>recommendations</h3>
-        <div id="recommendations"></div>
+        <div class="settings">persons</div>
+        <div class="persons"></div>
+        <div class="settings">recommendations</div>
+        <div class="recommendations"></div>
+        <br>
+        <button name="refresh">refresh</button>
+        <button name="reset">reset</button>
         <script>
           $(function () {
-            $('#persons').text(JSON.stringify(persons));
-            $('#recommendations').text(JSON.stringify(recommendations));
+            function refresh() {
+              for(let collection of ['persons','recommendations']) {
+                let $container=$(`#settings .${collection}`);
+                let $ul = $container.html('<ul></ul>');
+                for(let entity of service[collection]) {
+                  $ul.append(`<li>${JSON.stringify(entity)}</li>`)
+                }
+              }
+              /*
+              $('#persons').text(JSON.stringify(service.persons));
+              $('#recommendations').text(JSON.stringify(service.recommendations));
+              */
+            }
+
+            $('#settings button[name=refresh]').click(refresh);
+            $('#settings button[name=reset]').click(function () {
+              service.reset();
+              refresh();
+            });
+            
+            refresh();
           });
         </script>
       </div>
@@ -122,6 +144,9 @@
               } catch (e) {
                 console.log(e);
                 success = false;
+              }
+              if (typeof boolOrFunc === 'function') {
+                $('#test').append(`<br>`);
               }
               let style = success ? 'green' : 'red';
               $('#test').append(`<div style="color: ${style}">${title}</div>`);
@@ -142,7 +167,6 @@
 
             test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
-              console.log(fred, service)
               return fred.id == 4;
             });
             test('* must now find 3 "Doe" persons', service.findPersons('Doe').length == 3);
