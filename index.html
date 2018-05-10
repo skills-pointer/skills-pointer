@@ -10,6 +10,7 @@
     <script type="text/javascript" src="db.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="app.css">
 
     <script>
       $(function () {
@@ -22,62 +23,6 @@
         $('#welcome').text('Welcome ' + user.name + '!');
       });
     </script>
-
-    <style>
-      html, body {
-        font-family: sans-serif;
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-      }
-
-      .banner {
-        user-select: none;
-        width: 100%;
-      }
-      #title {
-        background-color: black;
-        color: white;
-        font-size: 200%;
-        padding: 16px;
-      }
-      #menu {
-        background-color: #111;
-        color: white;
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-      }
-      #menu li {
-        float: left;
-      }
-      #menu li.right {
-        float: right;
-      }
-      #menu li a {
-        color: white;
-        display: block;
-        outline-width: 0;
-        padding: 16px;
-        text-decoration: none;
-      }
-      #menu li a > i {
-        vertical-align:middle;
-      }
-      #menu li.ui-state-active a {
-        color: orange;
-        cursor: default;
-      }
-      #menu li:not(.ui-state-active) a:hover {
-        cursor: pointer;
-        color: orange;
-      }
-
-      #main .ui-tabs-panel {
-        padding: 16px;
-      }
-    </style>
   </head>
   <body>
     <div id="title" class="banner">
