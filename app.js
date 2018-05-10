@@ -3,6 +3,10 @@ class Service {
     this.db = new Database(database);
   }
 
+  findPerson(id) {
+    return this.db.get('persons')[id];
+  }
+
   findPersonsWithSkill(skill) {
     let result = {};
     this.db
@@ -26,10 +30,11 @@ class Service {
 
 
 const service = new Service('skillspointer');
-const db = service.db; //TODO get rid of this, obviously
 
+const db = service.db; //TODO get rid of this, obviously
 let persons = db.get('persons');
 let recommendations = db.get('recommendations');
+
 let user = persons[3];
 
 
@@ -39,33 +44,33 @@ let user = persons[3];
 const SAMPLE_DATA = {
   persons: [
     {
-      "id": 1,
+      "id": 0,
       "name": "John Doe",
       "location": "Meylan"
     },
     {
-      "id": 2,
+      "id": 1,
       "name": "Mary Doe",
       "location": "Lyon"
     },
     {
-      "id": 3,
+      "id": 2,
       "name": "Bastien David",
       "location": "Meylan"
     },
     {
-      "id": 4,
+      "id": 3,
       "name": "Brice de Nice",
       "location": "Sofia Antipolis"
     }
   ],
   recommendations: [
-    {recommender: 1, recommendee: 2, skill: "angular"},
-    {recommender: 1, recommendee: 3, skill: "angular"},
-    {recommender: 1, recommendee: 2, skill: "android"},
-    {recommender: 1, recommendee: 3, skill: "android"},
-    {recommender: 1, recommendee: 4, skill: "android"},
+    {recommender: 0, recommendee: 1, skill: "angular"},
+    {recommender: 0, recommendee: 2, skill: "angular"},
+    {recommender: 0, recommendee: 1, skill: "android"},
+    {recommender: 0, recommendee: 2, skill: "android"},
+    {recommender: 0, recommendee: 3, skill: "android"},
     
-    {recommender: 2, recommendee: 4, skill: "android"},
+    {recommender: 1, recommendee: 3, skill: "android"},
   ]
 };
