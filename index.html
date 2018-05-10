@@ -58,11 +58,13 @@
               displayRecommendedPeopleForSkills();
             });
           });
+          $('#find button').click(displayRecommendedPeopleForSkills);
+
         </script>
 
         <p>Qui pourrait m'aider sur...</p>
         <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
-        <button onclick="searchSkills()">OK</button>
+        <button>OK</button>
         <div id="result">
           <ul id="result_list"></ul>        
         </div>
