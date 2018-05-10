@@ -101,6 +101,7 @@ class Service {
     from=from.toLowerCase();
     to=to.toLowerCase();
     let matrix={
+      'grenoble':6,
       'lyon':100,
       'paris':650,
       'sofia antipolis':350
