@@ -47,8 +47,8 @@
             $("#result_list").empty();
             $("#nobody").hide();
 
-            var searchedSkill = document.getElementById("skillInput").value;
-            var findRecommendation = recommendations.filter(r => r.skill === searchedSkill);
+            let $skills = $('#find .skills');
+            var findRecommendation = recommendations.filter(r => r.skill === $skills.val());
             if (findRecommendation.length > 0) {
               console.log("Results found");
               var peopleWithSkill = persons.filter(p => findRecommendation.find(r => r.recommendee === p.id));
@@ -62,12 +62,12 @@
           }
 
           $(function () {
-            $('#skillInput').change(searchSkills);
+            $('#find .skills').change(searchSkills);
           });
         </script>
 
         <p>Qui pourrait m'aider sur...</p>
-        <input id="skillInput" type="text" autocomplete="off" placeholder="ex : angular">
+        <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
         <button onclick="searchSkills()">OK</button>
         <div id="result">
           <ul id="result_list"></ul>        
@@ -104,6 +104,8 @@
             db.set('persons', persons);
             db.set('recommendations', recommendations);
 
+            $name.val('');
+            $skill.val('');
           }
         </script>
 
