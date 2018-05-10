@@ -111,8 +111,4 @@ class Service {
 
 
 const service = new Service('skills-pointer');
-if (!service.findPerson(0)) { // just a hack to reset old databases (TODO add reset feature on "settings" tab ?)
-  service.reset();
-}
-
-let user = service.findPerson(3);
+const user = service.findPerson(3);
