@@ -36,7 +36,7 @@
 
       <div id="find">
         <script>
-          function searchSkills() {
+          function displayRecommendedPeopleForSkills() {
             $("#result_list").empty();
             $("#nobody").hide();
 
@@ -53,7 +53,10 @@
           }
 
           $(function () {
-            $('#find .skills').change(searchSkills);
+            $('#find .skills').change(function() {
+              this.blur();
+              displayRecommendedPeopleForSkills();
+            });
           });
         </script>
 
