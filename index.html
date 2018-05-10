@@ -14,17 +14,8 @@
     <link rel="stylesheet" href="app.css">
 
     <script>
-      let persons;
-      let recommendations;
-      let user;
-
       $(function () {
         $("#main").tabs({active: 0});
-
-        persons = db.get('persons');
-        recommendations = db.get('recommendations');
-        user = persons[3];
-
         $('#welcome').text('Welcome ' + user.name + '!');
       });
     </script>
@@ -40,6 +31,7 @@
         <li><a href="#find"><i class="material-icons">search</i> find</a></li>
         <li><a href="#recommend"><i class="material-icons">thumb_up</i> recommend</a></li>
         <li class="right"><a href="#settings"><i class="material-icons">settings</i> settings</a></li>
+        <li class="right"><a href="#test">test</a></li>
       </ul>
 
       <div id="find">
@@ -130,6 +122,12 @@
             $('#recommendations').text(JSON.stringify(recommendations));
           });
         </script>
+      </div>
+
+      <div id="test">
+        <script>
+        </script>
+        ABOUT TIME TO INTRODUCE A TEST!
       </div>
     </div>
   </body>
