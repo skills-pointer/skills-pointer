@@ -126,8 +126,33 @@
 
       <div id="test">
         <script>
+          $(function () {
+            function test(title, boolOrFunc) {
+              let success;
+              try {
+                success = typeof boolOrFunc === 'function' ? boolOrFunc() : boolOrFunc;
+              } catch (e) {
+                console.log(e);
+                success = false;
+              }
+              let style = success ? 'green' : 'red';
+              $('#test').append(`<div style="color: ${style}">${title}</div>`);
+            }
+
+            let service = new Service('skill-pointer-test');
+            service.reset();
+
+            let personsWithAndroidSkills;
+
+            test('find persons with Android skills', () => {
+              personsWithAndroidSkills = service.findPersonsWithSkill('android');
+              return personsWithAndroidSkills instanceof Object;
+            });
+
+            test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
+            test('* must indicate 2 recommendations for person 4', personsWithAndroidSkills[4] === 2);
+          });
         </script>
-        ABOUT TIME TO INTRODUCE A TEST!
       </div>
     </div>
   </body>

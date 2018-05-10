@@ -5,28 +5,28 @@ class Service {
 
   findPersonsWithSkill(skill) {
     let result = {};
-    recommendations
-            .filter(r => r.skill === skill)
-            .forEach(r => {
-              if (result[r.recommendee]) {
-                ++result[r.recommendee];
-              } else {
-                result[r.recommendee] = 1;
-              }
-            });
+    this.db
+      .get('recommendations').filter(r => r.skill === skill)
+      .forEach(r => {
+        if (result[r.recommendee]) {
+          ++result[r.recommendee];
+        } else {
+          result[r.recommendee] = 1;
+         }
+      });
     return result;
   }
-  
+
   reset() {
     for (let collection in SAMPLE_DATA) {
-      this.db.set(collection, sample[collection]);
+      this.db.set(collection, SAMPLE_DATA[collection]);
     }
   }
 }
 
 
-
-const db = new Database('skillspointer');
+const service = new Service('skillspointer');
+const db = service.db; //TODO get rid of this, obviously
 
 let persons = db.get('persons');
 let recommendations = db.get('recommendations');
@@ -45,8 +45,8 @@ const SAMPLE_DATA = {
     },
     {
       "id": 2,
-      "name": "John Doe",
-      "location": "Meylan"
+      "name": "Mary Doe",
+      "location": "Lyon"
     },
     {
       "id": 3,
@@ -60,7 +60,12 @@ const SAMPLE_DATA = {
     }
   ],
   recommendations: [
-    {recommender: 4, recommendee: 1, skill: "angular"},
-    {recommender: 4, recommendee: 1, skill: "C#"},
+    {recommender: 1, recommendee: 2, skill: "angular"},
+    {recommender: 1, recommendee: 3, skill: "angular"},
+    {recommender: 1, recommendee: 2, skill: "android"},
+    {recommender: 1, recommendee: 3, skill: "android"},
+    {recommender: 1, recommendee: 4, skill: "android"},
+    
+    {recommender: 2, recommendee: 4, skill: "android"},
   ]
 };
