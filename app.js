@@ -39,6 +39,9 @@ class Service {
 
 
 const service = new Service('skillspointer');
+if(!service.findPerson(0)) { // just a hack to reset old databases (TODO add reset feature on "settings" tab ?)
+  service.reset();
+}
 
 const db = service.db; //TODO get rid of this, obviously
 let persons = db.get('persons');
