@@ -77,14 +77,12 @@
               displayRecommendedPeopleForSkills();
             });
             $('#find button').click(displayRecommendedPeopleForSkills);
-            
-            displayRecommendedPeopleForSkills();
           });
         </script>
 
         <p>
           Qui pourrait m'aider sur
-          <input class="skills" type="text" autocomplete="off" placeholder="ex : angular" value="android">
+          <input class="skills" type="text" autocomplete="off" placeholder="ex : angular">
           <button>?</button>
         </p>
         <div class="result">
@@ -93,10 +91,10 @@
               <tr>
                 <td colspan="3"></td>
                 <td colspan="3" style="text-align: right">
-                  <select name="text">
-                    <option value="site" selected="selected">Closest first</option> 
-                    <option value="time" selected>Earliest available first</option>
+                  <select name="sort">
+                    <option value="site">Nearest first</option> 
                     <option value="rank">Most recommended first</option>
+                    <option value="time">Earliest available first</option>
                   </select>
                 </td>
               </tr>
