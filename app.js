@@ -53,7 +53,7 @@ class Service {
 
   // GET .../resources/persons?query=<query>
   findPersons(query) {
-    let result = this.persons.filter(p => p.name.includes(query));
+    let result = this.persons.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
     return result;
   }
 
@@ -83,9 +83,10 @@ class Service {
 
   // POST .../service/find-recommended-persons-for?skill=<skill>
   findRecommendedPersonsFor(skill) {
+    skill=skill.toLowerCase();
     let result = {};
     this.recommendations
-            .filter(r => r.skill === skill)
+            .filter(r => r.skill.toLowerCase() === skill)
             .forEach(r => {
               if (result[r.recommendee]) {
                 ++result[r.recommendee];
