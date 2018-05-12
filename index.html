@@ -103,7 +103,7 @@
           </table>
           <div id="nobody" style="display: none;">
             <p>Personne ne peut vous aider</p>
-            <img src="img/Appel%20à%20ami.webp" width="100">
+            <img src="img/Appel%20à%20ami.webp" width="100" alt="">
           </div>
         </div>
       </div>
@@ -147,7 +147,7 @@
                 let $container = $(`#settings .${collection}`);
                 let $ul = $container.html('<ul></ul>');
                 for (let entity of service[collection]) {
-                  $ul.append(`<li>${JSON.stringify(entity)}</li>`)
+                  $ul.append(`<li>${JSON.stringify(entity)}</li>`);
                 }
               }
             }
@@ -186,19 +186,19 @@
 
             test('find person by id', () => {
               let p = service.findPerson(1);
-              return p && p.name == 'Mary Doe';
+              return p && p.name === 'Mary Doe';
             });
 
             test('find persons by "query"', () => {
               let persons = service.findPersons('doe');
-              return persons.length == 2;
+              return persons.length === 2;
             });
 
             test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
-              return fred.id == 4;
+              return fred.id === 4;
             });
-            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length == 3);
+            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length === 3);
 
             let personsWithAndroidSkills;
             test('find recommended persons for Android skills', () => {
@@ -210,7 +210,7 @@
 
             test('recommend someone', () => {
               let recommendation = service.recommend(0, 1, 'agile');
-              return recommendation.skill == 'agile';
+              return recommendation.skill === 'agile';
             });
             test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
 
