@@ -50,7 +50,7 @@
               let counter=0;
               for (let id in recommendations) {
                 let person = service.findPerson(id);
-                let email='blablabla@orange.com';
+                let email=person.name.toLowerCase().replace(' ','.')+'@orange.com';
                 let phone='+33.'+(''+Math.random()).slice(-10);
                 let distance=service.findDistanceLabel(user.location,person.location);
                 let time=['free until 17:00','busy until 13:00','away until tomorrow'][counter%3];
