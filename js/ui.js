@@ -13,7 +13,7 @@ class RecommendAColleague {
       <input class="skill" type="text" placeholder="ex : angular">
       <button>recommander</button>
       </p>
-      <div id="result"></div>`;
+      <div class="message" style="display:none"></div>`;
     this.$root.append(html);
     this.$root.find('button').click(()=>this.recommend());
   }
@@ -27,8 +27,14 @@ class RecommendAColleague {
       let candidates = service.findPersons(name);
       let recommendee = candidates.length ? candidates[0] : service.createPerson(name);
       this.service.recommend(user.id, recommendee.id, skill);
+
       $name.val('');
       $skill.val('');
+      
+      let $result=this.$root.find('.message');
+      $result.fadeIn(200);
+      $result.html(`Vous avez recommandé <b>${name}</b> pour <b>${skill}</b>`);
+      $result.fadeOut(4000);
     }
   }
 }

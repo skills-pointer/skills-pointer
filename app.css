@@ -111,6 +111,19 @@ html, body {
 }
 
 
+.message {
+  background-color: #dfd;
+  border: 2px solid darkgreen;
+  border-radius: 10px;
+  color: darkgreen;
+  padding: 25px 50px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
 .settings {
   background-color: orange;
   color: white;
