@@ -18,10 +18,10 @@
     <link rel="stylesheet" href="app.css">
 
     <script>
-      $(function () {
-        const service = new Service('skills-pointer');
-        const user = service.findPerson(0); //TODO simulate authentication
+      const service = new Service('skills-pointer');
+      const user = service.findPerson(0); //TODO simulate authentication
 
+      $(function () {
         $("#main").tabs({active: 0});
         $('#welcome').text('bienvenu ' + user.name + '!');
 
@@ -152,53 +152,40 @@
       <div id="test">
         <script>
           $(function () {
-            function test(title, boolOrFunc) {
-              let success;
-              try {
-                success = typeof boolOrFunc === 'function' ? boolOrFunc() : boolOrFunc;
-              } catch (e) {
-                console.log(e);
-                success = false;
-              }
-              if (typeof boolOrFunc === 'function') {
-                $('#test').append(`<br>`);
-              }
-              let style = success ? 'green' : 'red';
-              $('#test').append(`<div style="color: ${style}">${title}</div>`);
-            }
-
             let service = new Service('skills-pointer-test');
             service.reset();
+            
+            let x=new TestSuite('#test','UNIT TESTS');
 
-            test('find person by id', () => {
+            x.test('find person by id', () => {
               let p = service.findPerson(1);
               return p && p.name === 'Mary Doe';
             });
 
-            test('find persons by "query"', () => {
+            x.test('find persons by "query"', () => {
               let persons = service.findPersons('doe');
               return persons.length === 2;
             });
 
-            test('create new person', () => {
+            x.test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
               return fred.id === 4;
             });
-            test('* must now find 3 "Doe" persons', service.findPersons('Doe').length === 3);
+            x.test('* must now find 3 "Doe" persons', service.findPersons('Doe').length === 3);
 
             let personsWithAndroidSkills;
-            test('find recommended persons for Android skills', () => {
+            x.test('find recommended persons for Android skills', () => {
               personsWithAndroidSkills = service.findRecommendedPersonsFor('android');
               return personsWithAndroidSkills instanceof Object;
             });
-            test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
-            test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
+            x.test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
+            x.test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
 
-            test('recommend someone', () => {
+            x.test('recommend someone', () => {
               let recommendation = service.recommend(0, 1, 'agile');
               return recommendation.skill === 'agile';
             });
-            test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
+            x.test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
 
             //TODO remove from localStorage
           });
