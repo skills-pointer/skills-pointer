@@ -7,19 +7,25 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
 
-    <script type="text/javascript" src="js/lib/db.js"></script>
-    
+    <script type="text/javascript" src="js/lib/Database.js"></script>
+    <script type="text/javascript" src="js/lib/TestSuite.js"></script>
+
     <script type="text/javascript" src="js/sample-data.js"></script>
     <script type="text/javascript" src="js/service.js"></script>
-    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="js/ui.js"></script>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="app.css">
 
     <script>
       $(function () {
+        const service = new Service('skills-pointer');
+        const user = service.findPerson(0); //TODO simulate authentication
+
         $("#main").tabs({active: 0});
         $('#welcome').text('bienvenu ' + user.name + '!');
+
+        new RecommendAColleague(service, '#recommend');
       });
     </script>
   </head>
@@ -50,14 +56,14 @@
             let $skills = $('#find .skills'); // TODO allow multiple skills
             let recommendations = service.findRecommendedPersonsFor($skills.val());
             if (Object.keys(recommendations).length > 0) {
-              let counter=0;
+              let counter = 0;
               for (let id in recommendations) {
                 let person = service.findPerson(id);
-                let email=person.name.toLowerCase().replace(' ','.')+'@orange.com';
-                let phone='+33.'+(''+Math.random()).slice(-10);
-                let distance=service.findDistanceLabel(user.location,person.location);
-                let time=['free until 17:00','busy until 13:00','away until tomorrow'][counter%3];
-                let rank='<i class="material-icons">thumb_up</i>'.repeat(Math.min(recommendations[id],10));
+                let email = person.name.toLowerCase().replace(' ', '.') + '@orange.com';
+                let phone = '+33.' + ('' + Math.random()).slice(-10);
+                let distance = service.findDistanceLabel(user.location, person.location);
+                let time = ['free until 17:00', 'busy until 13:00', 'away until tomorrow'][counter % 3];
+                let rank = '<i class="material-icons">thumb_up</i>'.repeat(Math.min(recommendations[id], 10));
                 $tbody.append(`<tr>
                                  <td><i class="material-icons">face</i></td>
                                  <td><b>${person.name}</b><br>${person.location}</td>
@@ -110,30 +116,7 @@
         </div>
       </div>
 
-      <div id="recommend">
-        <script>
-          function recommend() {
-            let $name = $('#recommend .name');
-            let candidates = service.findPersons($name.val());
-            let recommendee = candidates.length ? candidates[0] : service.createPerson($name.val());
-
-            let $skill = $('#recommend .skill');
-            service.recommend(user.id, recommendee.id, $skill.val());
-
-            $name.val('');
-            $skill.val('');
-          }
-        </script>
-        
-
-        <p>Mon coll&egrave;gue
-          <input class="name" type="text" placeholder="ex: Marie">
-          m'a aid&eacute; avec
-          <input class="skill" type="text" placeholder="ex : angular">
-          <button onclick="recommend()">recommander</button>
-        </p>
-        <div id="result"></div>
-      </div>
+      <div id="recommend"></div>
 
       <div id="settings">
         <div class="settings">persons</div>
