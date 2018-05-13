@@ -1,11 +1,7 @@
 class TestSuite {
   constructor(selector,title) {
     this.$root = $(selector);
-    this.$root.append(`<div>${title}</div>`);
-  }
-
-  init() {
-    this.$root.empty();
+    this.$root.append(`<div style="border-bottom: 1px solid grey; font-weight: bold; margin-top: 25px;">${title}</div>`);
   }
 
   test(title, boolOrFunc) {
@@ -16,10 +12,8 @@ class TestSuite {
       console.log(e);
       success = false;
     }
-    if (typeof boolOrFunc === 'function') {
-      this.$root.append(`<br>`);
-    }
     let style = success ? 'green' : 'red';
-    this.$root.append(`<div style="color: ${style}">${title}</div>`);
+    let top=typeof boolOrFunc === 'function' ? 5 : 0;
+    this.$root.append(`<div style="color: ${style}; margin-top: ${top}px">${title}</div>`);
   }
 }

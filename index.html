@@ -154,42 +154,59 @@
           $(function () {
             let service = new Service('skills-pointer-test');
             service.reset();
-            
-            let x=new TestSuite('#test','UNIT TESTS');
 
-            x.test('find person by id', () => {
+            let unit = new TestSuite('#test', 'UNIT TESTS');
+
+            unit.test('find person by id', () => {
               let p = service.findPerson(1);
               return p && p.name === 'Mary Doe';
             });
 
-            x.test('find persons by "query"', () => {
+            unit.test('find persons by "query"', () => {
               let persons = service.findPersons('doe');
               return persons.length === 2;
             });
 
-            x.test('create new person', () => {
+            unit.test('create new person', () => {
               let fred = service.createPerson('Fred Doe');
               return fred.id === 4;
             });
-            x.test('* must now find 3 "Doe" persons', service.findPersons('Doe').length === 3);
+            unit.test('* must now find 3 "Doe" persons', service.findPersons('Doe').length === 3);
 
             let personsWithAndroidSkills;
-            x.test('find recommended persons for Android skills', () => {
+            unit.test('find recommended persons for Android skills', () => {
               personsWithAndroidSkills = service.findRecommendedPersonsFor('android');
               return personsWithAndroidSkills instanceof Object;
             });
-            x.test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
-            x.test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
+            unit.test('* must find 3 persons', Object.keys(personsWithAndroidSkills).length === 3);
+            unit.test('* must indicate 2 recommendations for person 3', personsWithAndroidSkills[3] === 2);
 
-            x.test('recommend someone', () => {
+            unit.test('recommend someone', () => {
               let recommendation = service.recommend(0, 1, 'agile');
               return recommendation.skill === 'agile';
             });
-            x.test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
+            unit.test('* must now find 1 "agile" person', Object.keys(service.findRecommendedPersonsFor('agile')).length === 1);
 
+            let ui = new TestSuite('#test', 'USER INTERFACE TESTS');
+            let root = '#test-root';
+            let $root = $(root);
+
+            ui.test('recommend a colleague', () => {
+              new RecommendAColleague(service, '#test-root');
+              console.log(service.findRecommendedPersonsFor('ios'))
+              let n = Object.keys(service.findRecommendedPersonsFor('ios')).length;
+              $root.find('.name').val('Wilma');
+              $root.find('.skill').val('ios');
+              $root.find('button').trigger('click');
+              $('#test-root').empty();
+              return Object.keys(service.findRecommendedPersonsFor('ios')).length === n+1;
+            });
+
+            
             //TODO remove from localStorage
           });
         </script>
+        <div id="test-root"></div>
       </div>
     </div>
   </body>
