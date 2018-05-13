@@ -29,7 +29,7 @@ html, body {
 }
 
 #menu {
-  background-color: #111;
+  background-color: black;
   color: white;
   list-style-type: none;
   margin: 0;
@@ -37,6 +37,10 @@ html, body {
   overflow: hidden;
 }
 #menu li {
+  /* override JQuery tabs styles */
+  background-color: black;
+  border: 0;
+  /* end override */
   float: left;
 }
 #menu li.right {
@@ -54,14 +58,27 @@ html, body {
   vertical-align:middle;
 }
 #menu li.ui-state-active a {
+  background-color: black; /* override JQuery tabs styles */
   color: orange;
   cursor: default;
 }
 #menu li:not(.ui-state-active) a:hover {
+  background-color: black; /* override JQuery tabs styles */
   cursor: pointer;
   color: orange;
 }
 
+
+/* override JQuery tabs styles */
+#main {
+  border: 0;
+  padding: 0;
+}
+#menu {
+  border: 0;
+  border-radius: 0;
+}
+/* end override */
 
 #main .ui-tabs-panel {
   padding: 16px;
